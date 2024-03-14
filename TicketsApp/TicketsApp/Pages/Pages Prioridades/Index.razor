@@ -1,0 +1,61 @@
+﻿@page "/Index"
+@inject HttpClient httpClient
+
+<div class="card shadow-lg">
+    <div class="card-header">
+        <h3>Consulta Vehiculo</h3>
+    </div>
+
+        <div class="card-body">
+
+            <div class="mb-3 d-flex justify-content-end">
+                <a href="Create" class="btn btn-success">Create</a>
+            </div>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>PrioridadesId</th>
+                    <th>Descripci&oacute;n</th>
+                    <th>Dias Compromiso</th>
+                    
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ListaPrioridades!)
+                {
+                    <tr>
+                        <td>@item.PrioridadesId</td>
+                        <td>@item.Descripcion</td>
+                        <td>@item.DiasCompromiso</td>
+
+                        <td>
+                            <a href="/Delete/@item.PrioridadesId" class="btn btn-danger bi bi-trash-fill">Delete</a>
+                             <a href="/Edit/@item.PrioridadesId" class="btn btn-primary bi-box-arrow-up-right">Edit</a>
+                             <a href="/Details/@item.PrioridadesId" class="btn btn-success bi-box-arrow-up-right">Detalles</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+ </div>
+
+
+
+@code {
+   
+    public List<Prioridades>? ListaPrioridades { get; set; } = new List<Prioridades>();
+    public Prioridades? prioridades { get; set; } = new Prioridades();
+    
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // await Buscar();
+        ListaPrioridades = (await httpClient.GetFromJsonAsync<List<Prioridades>>($"api/Prioridades"))!;
+    }
+}
