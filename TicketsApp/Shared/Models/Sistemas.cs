@@ -10,7 +10,7 @@ namespace Shared.Models
     public class Sistemas
     {
         [Key]
-        public int SistemasId { get; set; }
+        public int SistemaId { get; set; }
         [Required(ErrorMessage = "Es requerido")]
         public string? Nombre { get; set; }
     }
