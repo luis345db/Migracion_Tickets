@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketsApp", "TicketsApp\TicketsApp.csproj", "{E0E68D5E-6225-4678-99D3-618D1323386D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketsApp", "TicketsApp\TicketsApp.csproj", "{E0E68D5E-6225-4678-99D3-618D1323386D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicketsApp.Api", "TicketsApp.Api\TicketsApp.Api.csproj", "{42046570-A9FC-4F11-AEEC-BA8E36AA4740}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicketsApp.Api", "TicketsApp.Api\TicketsApp.Api.csproj", "{42046570-A9FC-4F11-AEEC-BA8E36AA4740}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{DC40AC6A-4A77-485E-8494-E1667DA9291E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{DC40AC6A-4A77-485E-8494-E1667DA9291E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
