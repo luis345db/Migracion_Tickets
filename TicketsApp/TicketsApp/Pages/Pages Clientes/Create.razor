@@ -1,0 +1,134 @@
+﻿@page "/C_Create"
+@inject HttpClient httpClient
+@inject NavigationManager Navigation
+@using System.Xml.Linq
+
+<PageTitle>Registro de Clientes</PageTitle>
+<EditForm Model="cliente" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro Clientes </h1>
+        </div>
+        <div class=" card-body">
+            <label>Cliente Id</label>
+
+            <div class="input-group">
+                <InputNumber min="0" @bind-Value="cliente.ClienteId" class="id-input"></InputNumber>
+            </div>
+
+            <div>
+                <label>Nombres:</label>
+                <InputText @bind-Value="cliente.Nombres" class="form-control"></InputText>
+                <ValidationMessage For="@(() => cliente.Nombres)" />
+            </div>
+            <div>
+                <label>Telefonos:</label>
+                <InputText @bind-Value="cliente.Telefono" class="form-control"></InputText>
+                <ValidationMessage For="@(() => cliente.Telefono)" />
+            </div>
+            <div>
+                <label>Celular:</label>
+                <InputText @bind-Value="cliente.Celular" class="form-control"></InputText>
+                <ValidationMessage For="@(() => cliente.Celular)" />
+            </div>
+            <div>
+                <label>RNC</label>
+                <InputText @bind-Value="cliente.RNC" class="form-control"></InputText>
+                <ValidationMessage For="@(() => cliente.RNC)" />
+            </div>
+            <div>
+                <label>Email:</label>
+                <InputText @bind-Value="cliente.Email" class="form-control"></InputText>
+                <ValidationMessage For="@(() => cliente.Email)" />
+            </div>
+            <div>
+                <label>Direccion:</label>
+                <InputText @bind-Value="cliente.Direccion" class="form-control"></InputText>
+                <ValidationMessage For="@(() => cliente.Direccion)" />
+            </div>
+
+
+
+        </div>
+        <div class="card-footer ">
+
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-primary  bi bi-car-front" @onclick="Atras">Volver <i class="bi bi-arrow-return-left" /></button>
+                <button type="submit" class="btn btn-outline-success">Guardar <i class="bi bi-floppy-fill" /></button>
+            </div>
+
+        </div>
+    </div>
+
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public int ClientesId { get; set; }
+    public Clientes cliente { get; set; } = new Clientes();
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ClientesId > 0)
+        {
+            this.cliente.ClienteId = ClientesId;
+            await Buscar();
+        }
+
+    }
+
+    private async Task<Clientes> BuscarVehiculo(int clienteId)
+    {
+        Clientes cliente = new Clientes();
+        var clienteEncontrado = await httpClient.GetFromJsonAsync<Clientes>($"api/Clientes/{clienteId}");
+        if (clienteEncontrado != null)
+            return cliente = clienteEncontrado;
+        return new Clientes();
+    }
+
+    public async Task Buscar()
+    {
+        var clienteIdEncontrado = (await httpClient.GetFromJsonAsync<List<Clientes>>($"api/Clientes"))!
+        .ToList()
+        .Any(t => t.ClienteId == cliente.ClienteId);
+        if (clienteIdEncontrado)
+        {
+            var clienteEncontrado = await httpClient.GetFromJsonAsync<Clientes>($"api/Clientes/{cliente.ClienteId}");
+            if (clienteEncontrado != null)
+            {
+                this.cliente = clienteEncontrado;
+                StateHasChanged();
+            }
+        }
+
+    }
+
+    public async Task Guardar()
+    {
+        var response = await httpClient.PostAsJsonAsync("api/Clientes", cliente);
+        if (!response.IsSuccessStatusCode)
+        {
+            return;
+        }
+
+        StateHasChanged();
+        this.Nuevo();
+        this.Atras();
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/C_Index");
+    }
+
+    public void Nuevo()
+    {
+        cliente = new Clientes();
+
+    }
+}
