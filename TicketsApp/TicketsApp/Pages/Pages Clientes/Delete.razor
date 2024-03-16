@@ -1,0 +1,89 @@
+﻿@page "/C_Delete"
+@page "/C_Delete/{ClientesId:int}"
+@inject NavigationManager Navigation
+@inject HttpClient httpClient
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Eliminar Clientes</PageTitle>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h3>Eliminar Clientes</h3>
+    </div>
+    <div class="card-header">
+        <h3 class="text-danger">¿Estas seguro que quieres eliminar el Cliente?</h3>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+
+                <dt class="col-sm-3">Cliente Id:</dt>
+                <dd class="col-sm-9">@cliente.ClienteId</dd>
+
+
+                <dt class="col-sm-3">Nombres:</dt>
+                <dd class="col-sm-9">@cliente.Nombres</dd>
+
+                <dt class="col-sm-3">Telefono:</dt>
+                <dd class="col-sm-9">@cliente.Telefono</dd>
+
+                <dt class="col-sm-3">Celular:</dt>
+                <dd class="col-sm-9">@cliente.Celular</dd>
+
+
+                <dt class="col-sm-3">RNC:</dt>
+                <dd class="col-sm-9">@cliente.RNC</dd>
+
+                <dt class="col-sm-3">Email:</dt>
+                <dd class="col-sm-9">@cliente.Email</dd>
+
+                <dt class="col-sm-3">Direccion:</dt>
+                <dd class="col-sm-9">@cliente.Direccion</dd>
+
+            </dl>
+
+        </div>
+
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-outline-primary" @onclick="Atras">Volver <i class="bi bi-arrow-return-left" /></button>
+        <button type="button" class="btn btn-outline-danger" @onclick="Eliminar">Eliminar <i class="bi bi-trash" /></button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int ClientesId { get; set; }
+    public Clientes cliente { get; set; } = new Clientes();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ClientesId > 0)
+        {
+            var clienteEncontrado = await httpClient.GetFromJsonAsync<Clientes>($"api/Clientes/{ClientesId}");
+            if (clienteEncontrado != null)
+            {
+                cliente = clienteEncontrado;
+
+            }
+
+        }
+    }
+
+
+
+    public async Task Eliminar()
+    {
+        var eliminado = await httpClient.DeleteAsync($"api/Clientes/{cliente.ClienteId}");
+        if (eliminado.IsSuccessStatusCode)
+        {
+            return;
+        }
+        Atras();
+    }
+
+    void Atras()
+    {
+        Navigation.NavigateTo("/C_Index");
+    }
+}
